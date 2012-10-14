@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 
 ## PARSING HTML FILE ##
-request = urllib2.Request("http://download.cyanogenmod.com/?device=p970")
+request = urllib2.Request("replace with your cellphone URL")
 response = urllib2.urlopen(request)
 soup = BeautifulSoup(response)
 output = soup.find('a', href=re.compile('^http://get.cm/get'))['href']
