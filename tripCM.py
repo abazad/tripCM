@@ -1,13 +1,37 @@
-import urllib2
+import urllib2,re,hashlib
 from bs4 import BeautifulSoup
-import re
+
+## THIS FUNCTION HAS NOT BEEN TESTED, IT MAY DOESN'T WORK ##
+
+def md5_check (file, blocks_size = 2**20):
+
+    """
+	the best way to check the entire file and make sure
+	that you free the memory on each iteration,is dividing it 
+	in various digest blocks, next feeding them
+    to MD5 consecutively using update().
+    """
+
+    md5 = hashlib.md5()
+    while True:
+
+        #reading blocks size
+    	data = file.read(blocks_size)
+
+    	if not data:
+    		break
+
+        md5.update(data)
+
+        return md5.digest()
+
 
 ## PARSING HTML FILE ##
-request = urllib2.Request("replace with your cellphone URL")
+request = urllib2.Request("http://download.cyanogenmod.com/?device=p970")
 response = urllib2.urlopen(request)
 soup = BeautifulSoup(response)
 output = soup.find('a', href=re.compile('^http://get.cm/get'))['href']
-
+##     -----         ##
 
 ## DOWNLOADING FILE ##
 
