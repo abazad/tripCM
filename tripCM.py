@@ -10,6 +10,7 @@ def md5_check (file, blocks_size = 2**20):
 	that you free the memory on each iteration,is dividing it 
 	in various digest blocks, next feeding them
     to MD5 consecutively using update().
+
     """
 
     md5 = hashlib.md5()
