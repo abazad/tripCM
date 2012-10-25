@@ -11,6 +11,6 @@ This script requires the installation of the "BeautifulSoup" library for the HTM
 TO DO:
 ======
 
-- MD5 file checking function
+- MD5 file checking function [ IMPLEMENTED BUT NOT TESTED ]
 - Download set by category ( choosing between STABLE, NIGHTLY, RC, EXPERIMENTAL )
 - Set the input URL from sys.argv
