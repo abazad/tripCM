@@ -1,39 +1,8 @@
-import os, re, sys, getopt
+import os, re, sys
 import urllib2
 
-## HTML parsing library
+# HTML parsing library
 from bs4 import BeautifulSoup
-
-
-def main ():
-
-    if (len (sys.argv) < 2):
-
-		print "Usage : python tripCM.py URL mode \n"
-		"URL : Cyanogenmod ROM URL \n"
-		"mode : stable/RC/snapshot/nightly"
-
-	else:
-
-		URL = sys.argv[1]
-	  	mode = sys.argv[2]
-
-	  	if mode == 'stable':
-	  		link = URL+'&type=stable'
-	  		download(link)
-
-	  	elif mode == 'RC':
-	  		link = URL+'&type=RC'
-	  		download(link)
-
-	  	elif mode == 'snapshot':
-	  	    link = URL+'&type=snapshot'
-	  	    download(link)
-
-	  	elif mode == 'nightly':
-	  		link = URL+'&type=nightly'
-	  		download(link)
-
 
 
 def download (URL):
@@ -66,5 +35,25 @@ def download (URL):
 			print status,
 			f.close()
 
-			if __name__ == '__main__':
+
+
+def main ():
+
+	if (len (sys.argv) < 2):
+
+		print "Usage : python tripCM.py URL mode \n"
+		"URL : Cyanogenmod ROM URL \n"
+		"mode : stable/RC/snapshot/nightly"
+
+	else:
+
+		URL = sys.argv[1]
+	  	mode = sys.argv[2]
+
+                # thanks to slacknux > https://github.com/slacknux for the suggestion.
+	  	link = "%s&type=%s" % (URL, mode)
+	  	download(link)
+
+
+	  	if __name__ == '__main__':
 				main()
