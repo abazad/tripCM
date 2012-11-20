@@ -11,10 +11,10 @@ This script requires the installation of the "BeautifulSoup" library for the HTM
 Usage:
 ======
 
-python tripCM.py URL mode \n"
+> python tripCM.py URL mode
 
-mode : stable/RC/snapshot/nightly
-URL : ROM url
+* mode : stable/RC/snapshot/nightly
+* URL : ROM url
 
 
 TO DO:
