@@ -1,7 +1,7 @@
 import os, re, sys, getopt
 import urllib2
 
-# HTML parsing library
+## HTML parsing library
 from bs4 import BeautifulSoup
 
 
