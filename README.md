@@ -20,4 +20,4 @@ Usage:
 TO DO:
 ======
 
-- MD5 file checking function [ IMPLEMENTED BUT NOT TESTED ]
+- MD5 file checking function
