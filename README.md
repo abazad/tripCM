@@ -1,20 +1,21 @@
-tripCM
+##tripCM
+
+A Python script which allows you to download the last CyanogenMod ROM of your cellphone from the official Webpage, choosing types you prefer.
+
+##Requirements:
+
+This script requires the installation of the "BeautifulSoup" library for the HTML file parsing. It also uses the "Urllib2" library for the HTTP request, alredy installed in Python.
+
+##Usage:
 ======
 
-A Python script which allows to download the last CyanogenMod ROM of your cellphone from the official Webpage
-
-Requirements:
-======
-
-This script requires the installation of the "BeautifulSoup" library for the HTML file parsing, and the "Urllib2" library for the HTTP request.
-
-Usage:
-======
+From command-line:
 
 > python tripCM.py URL mode
 
-* mode : stable/RC/snapshot/nightly
-* URL : ROM url
+* **URL** : ROM url
+* **mode** : stable/RC/snapshot/nightly
+
 
 
 TO DO:
