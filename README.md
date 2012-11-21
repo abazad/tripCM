@@ -18,4 +18,4 @@ From command-line:
 TO DO:
 ======
 
-- MD5 file checking function
+* MD5 file checking function
