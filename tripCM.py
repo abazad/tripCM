@@ -1,50 +1,137 @@
-import os, re, sys
+#!/usr/bin/python
+
+#tripCM by gabriele-salvatori & slacknux
+
+import getopt
+import re
+import sys
+import time
 import urllib2
 
-#thanks to slacknux > https://github.com/slacknux for some suggestments
- 
-def main ():
 
-    if (len (sys.argv) < 2):
- 
-                print "Usage : python tripCM.py URL mode \n"
-                "URL : Cyanogenmod ROM URL \n"
-                "mode : stable/RC/snapshot/nightly"
+def download(codename, tp):
+	link = "http://download.cyanogenmod.com/?device=%s&type=%s" % (codename, tp)
+	response = urllib2.urlopen(link)
+	response = response.read()
+	
+    	try:
+		directLink = re.search('url=(.*?\.zip)', response).group(1)
+	except:
+		print "1. Wrong codename and/or type\n2. Type not available for your device\n"
+		sys.exit()
 
-                sys.exit()
- 
-                URL = sys.argv[1]
-                mode = sys.argv[2]
-                link = "%s&type=%s" % (URL, mode)
-                download(link)
- 
- 
-def download (URL):
+	fileName = directLink.split("/")[-1]
+    	u = urllib2.urlopen(directLink)
+    	meta = u.info()
+    	fileSize = int(meta.getheaders("Content-Length")[0])
+	f = open(fileName, 'wb')
+    	print "[*]Downloading: %s" % fileName
 
-    response = urllib2.urlopen(URL)
-    output = re.search('url=(.*?\.zip)', response.read()).group(1)
+    	downloadSize = 0
+    	timeSpent = 0
+    	speed = 0
+    	step = time.time()
 
-    file_name = output.split('/')[-1]
-    u = urllib2.urlopen(output)
-    f = open(file_name, 'wb')
-    meta = u.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading: %s Bytes: %s" % (file_name, file_size)
+    	while True:
+      		start = time.time()
+      		chunk = u.read(8192)
 
-    file_size_dl = 0
-    block_sz = 8192
+      		if not chunk:
+			time.sleep(1)
+			print "\033[0K\t\tDownload completed\n"
+			break
 
-    while True:
-        buffer = u.read(block_sz)
-        if not buffer:
-            break
+      		now = time.time()
 
-            file_size_dl += len(buffer)
-            f.write(buffer)
-            status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-            status = status + chr(8)*(len(status)+1)
-            print status,
-            f.close()
+      		if now-step>=2:
+			timeSpent = now - start
+		        speed=((len(chunk) / 1024) / timeSpent)
+		        step = now
 
-            if __name__ == '__main__':
-                main()
+		downloadSize += len(chunk)
+		f.write(chunk)
+		remaining = (((fileSize-downloadSize)/len(chunk))*timeSpent)
+      
+		if remaining >= 60 and remaining<3600:
+			remaining="%d min" % (remaining/60)
+		elif remaining<60:
+	  		remaining="%d s" % remaining
+      		else:
+          		remaining="%d h" % (remaining/3600)
+
+      		percent = int(downloadSize*100/fileSize)
+      		status = "\033[0J " + "\t\t%.2f MB of %.2f MB\t%d%%\t%d kB/s   %s" % (downloadSize/1048576.0, fileSize/1048576.0, percent, speed, remaining)
+      		status += "\033[1A"
+      		print status
+	f.close()
+
+
+def devList():
+	u = urllib2.urlopen("http://download.cyanogenmod.com/")
+	response = u.read()
+
+	#extract device name and codename
+	devicesList = re.findall('title="(.*?)".*?GetCM.navigateDevice\(\'(.*?)\'\)', response)
+	#sort by device name
+	devicesList.sort(key=lambda tup:tup[0])
+
+	print "\033[4mCodename\033[0m"
+	for item in devicesList:
+		ntab = "\t"
+		if len(item[1]) < 8:
+			ntab="\t\t"
+		print "%s%s%s" % (item[1], ntab, item[0])
+
+
+def usage():
+	print "Usage:\n\t./tripCM.py -c <codename> -t <type>\n"
+	print "Description:\n\t-c, --codename\t\tdevice codename\n\t-t, --type\t\tstable, RC, snapshot, nightly\n\t-l, --list\t\tdevices list (to know your device codename)\n\t-h, --help\t\twhat you're reading now\n"
+	print "Example:\n\t./tripCM.py -c crespo -t stable\n"
+
+
+def main():
+	print "                                   *     "
+	print "          )                 (    (  `    "
+	print "       ( /( (   (           )\   )\))(   "
+	print "       )\()))(  )\  `  )  (((_) ((_)()\  "
+	print "      (_))/(()\((_) /(/(  )\___ (_()((_) "
+	print "      | |_  ((_)(_)((_)_\((/ __||  \/  | "
+	print "      |  _|| '_|| || '_ \)| (__ | |\/| | "
+	print "       \__||_|  |_|| .__/  \___||_|  |_| "
+	print "                   |_|                   "
+	print "       by gabriele-salvatori & slacknux\n"
+
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], "c:t:lh", ["codename", "type", "list", "help"])
+	except getopt.GetoptError as err:
+		usage()
+		print str(err)
+		sys.exit()
+	
+	if not opts:
+		usage()
+		sys.exit()
+	
+	codename = ""
+	tp = ""
+
+	for o, a in opts:
+		if o in ("-h", "--help"):
+			usage()
+			sys.exit()
+		elif o in ("-l", "--list"):
+			devList()
+			sys.exit()
+		elif o in ("-c", "--codename"):
+			codename = a
+		elif o in ("-t", "--type"):
+			tp = a
+		else:
+			usage()
+			sys.exit()
+	download(codename, tp)
+
+
+if __name__ == "__main__":
+	main()
+

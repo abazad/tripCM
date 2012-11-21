@@ -1,6 +1,6 @@
 ##tripCM
 
-A Python script which allows you to download the last CyanogenMod ROM of your cellphone from the official Webpage, choosing types you prefer.
+A Python script which allows you to download the latest CyanogenMod ROM for your Android device from the official webpage, choosing the type you prefer.
 
 
 ##Usage:
@@ -8,10 +8,11 @@ A Python script which allows you to download the last CyanogenMod ROM of your ce
 
 From command-line:
 
-> python tripCM.py URL mode
+> python tripCM.py -c <codename> -t <type>
+> for more information: python tripCM.py -h
 
-* **URL** : ROM url
-* **mode** : stable/RC/snapshot/nightly
+* **codename** : your device codename (e.g. crespo for Google Nexus S)
+* **type** : stable/RC/snapshot/nightly
 
 
 
