@@ -1,7 +1,7 @@
 import os, re, sys
 import urllib2
 
-#thanks to slacknux > https://github.com/slacknux for some suggestmens
+#thanks to slacknux > https://github.com/slacknux for some suggestments
  
 def main ():
 
