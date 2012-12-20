@@ -9,6 +9,7 @@ A Python script which allows you to download the latest CyanogenMod ROM for your
 From command-line:
 
 > python tripCM.py -c codename -t type
+
 > for more information: python tripCM.py -h
 
 * **codename** : your device codename (e.g. crespo for Google Nexus S)
